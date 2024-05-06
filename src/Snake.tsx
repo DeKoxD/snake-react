@@ -7,6 +7,7 @@ import DisplayContainer from "./style/DisplayContainer";
 import DisplayRow from "./style/DisplayRow";
 import { Coord } from "./Coord";
 import { PhoneBody } from "./style/PhoneBody";
+import Display from "./Display";
 
 interface SnakeProps {
   sizeX: number;
@@ -147,6 +148,18 @@ function Snake({ sizeX, sizeY, frameRate }: SnakeProps) {
     };
   }, [reset]);
 
+  const frame = useMemo(() => {
+    const frame = Array(sizeX * sizeY).fill(false);
+    frame[snakeHead.y * sizeX + snakeHead.x] = true;
+    snakeBody.forEach((part) => {
+      frame[part.y * sizeX + part.x] = true;
+    });
+    foods.forEach((food) => {
+      frame[food.y * sizeX + food.x] = true;
+    });
+    return frame;
+  }, [sizeX, sizeY, snakeHead, snakeBody, foods]);
+
   return (
     <PhoneBody>
       <DisplayContainer $lit={lit}>
@@ -193,6 +206,7 @@ function Snake({ sizeX, sizeY, frameRate }: SnakeProps) {
         lit={lit}
         backlightOn={backlightOn}
       />
+      <Display sizeX={sizeX} sizeY={sizeY} frame={frame} lit={lit} />
     </PhoneBody>
   );
 }
