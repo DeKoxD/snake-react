@@ -7,6 +7,8 @@ import DisplayContainer from "./style/DisplayContainer";
 import DisplayRow from "./style/DisplayRow";
 import { Coord } from "./Coord";
 import { PhoneBody } from "./style/PhoneBody";
+import Forehead from "./Forehead";
+import PhoneTop from "./style/PhoneTop";
 
 interface SnakeProps {
   sizeX: number;
@@ -149,40 +151,46 @@ function Snake({ sizeX, sizeY, frameRate }: SnakeProps) {
 
   return (
     <PhoneBody>
-      <DisplayContainer $lit={lit}>
-        {Array(sizeY)
-          .fill(null)
-          .map((_, y) => (
-            <DisplayRow key={`row ${y}`}>
-              {Array(sizeX)
-                .fill(null)
-                .map((_, x) => {
-                  const cur: Coord = new Coord(x, y);
-                  const props: DisplayCellProps = {
-                    $firstRow: !y,
-                    $firstColumn: !x,
-                    $lit: lit,
-                  };
-                  if (
-                    snakeBody.some((part) => cur.equals(part)) ||
-                    cur.equals(snakeHead)
-                  ) {
-                    return (
-                      <DisplayCellSnakeBody
-                        key={`snake cell ${x} ${y}`}
-                        {...props}
-                      />
-                    );
-                  } else if (foods.some((food) => cur.equals(food))) {
-                    return (
-                      <DisplayCellFood key={`food cell ${x} ${y}`} {...props} />
-                    );
-                  }
-                  return <DisplayCell key={`cell ${x} ${y}`} {...props} />;
-                })}
-            </DisplayRow>
-          ))}
-      </DisplayContainer>
+      <PhoneTop>
+        <Forehead />
+        <DisplayContainer $lit={lit}>
+          {Array(sizeY)
+            .fill(null)
+            .map((_, y) => (
+              <DisplayRow key={`row ${y}`}>
+                {Array(sizeX)
+                  .fill(null)
+                  .map((_, x) => {
+                    const cur: Coord = new Coord(x, y);
+                    const props: DisplayCellProps = {
+                      $firstRow: !y,
+                      $firstColumn: !x,
+                      $lit: lit,
+                    };
+                    if (
+                      snakeBody.some((part) => cur.equals(part)) ||
+                      cur.equals(snakeHead)
+                    ) {
+                      return (
+                        <DisplayCellSnakeBody
+                          key={`snake cell ${x} ${y}`}
+                          {...props}
+                        />
+                      );
+                    } else if (foods.some((food) => cur.equals(food))) {
+                      return (
+                        <DisplayCellFood
+                          key={`food cell ${x} ${y}`}
+                          {...props}
+                        />
+                      );
+                    }
+                    return <DisplayCell key={`cell ${x} ${y}`} {...props} />;
+                  })}
+              </DisplayRow>
+            ))}
+        </DisplayContainer>
+      </PhoneTop>
       <Keypad
         up={up}
         down={down}
