@@ -10,30 +10,46 @@ interface Props {
   right: () => void;
   reset: () => void;
   start: () => void;
+  lit?: boolean;
+  backlightOn: () => void;
 }
 
-function Keypad({ up, down, left, right, reset, start }: Props) {
+function Keypad({
+  up,
+  down,
+  left,
+  right,
+  reset,
+  start,
+  lit,
+  backlightOn,
+}: Props) {
+  const lightOnCallback = (cb?: () => void) => () => {
+    backlightOn();
+    cb?.();
+  };
+
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       switch (event.key) {
         case "ArrowUp":
         case "w":
-        case "Num2":
+        case "Numpad2":
           up();
           break;
         case "ArrowDown":
         case "s":
-        case "Num8":
+        case "Numpad8":
           down();
           break;
         case "ArrowLeft":
         case "a":
-        case "Num4":
+        case "Numpad4":
           left();
           break;
         case "ArrowRight":
         case "d":
-        case "Num6":
+        case "Numpad6":
           right();
           break;
         case " ":
@@ -42,9 +58,12 @@ function Keypad({ up, down, left, right, reset, start }: Props) {
         case "Enter":
           reset();
           break;
+        case "b":
+          backlightOn();
+          break;
       }
     },
-    [down, left, start, reset, right, up]
+    [down, left, start, reset, right, up, backlightOn]
   );
 
   useEffect(() => {
@@ -57,24 +76,62 @@ function Keypad({ up, down, left, right, reset, start }: Props) {
   return (
     <KeypadContainer>
       <KeypadRow>
-        <KeypadButton digit="1" letters="O_O" />
-        <KeypadButton digit="2" letters="abc" onClick={up} />
-        <KeypadButton digit="3" letters="def" />
+        <KeypadButton lit={lit} digit="1" letters="O_O" onClick={backlightOn} />
+        <KeypadButton
+          lit={lit}
+          digit="2"
+          letters="abc"
+          onClick={lightOnCallback(up)}
+        />
+        <KeypadButton
+          lit={lit}
+          digit="3"
+          letters="def"
+          onClick={backlightOn}
+          reverse
+        />
       </KeypadRow>
       <KeypadRow>
-        <KeypadButton digit="4" letters="ghi" onClick={left} />
-        <KeypadButton digit="5" letters="jkl" />
-        <KeypadButton digit="6" letters="mno" onClick={right} />
+        <KeypadButton
+          lit={lit}
+          digit="4"
+          letters="ghi"
+          onClick={lightOnCallback(left)}
+        />
+        <KeypadButton lit={lit} digit="5" letters="jkl" onClick={backlightOn} />
+        <KeypadButton
+          lit={lit}
+          digit="6"
+          letters="mno"
+          onClick={lightOnCallback(right)}
+          reverse
+        />
       </KeypadRow>
       <KeypadRow>
-        <KeypadButton digit="7" letters="pqrs" />
-        <KeypadButton digit="8" letters="tuv" onClick={down} />
-        <KeypadButton digit="9" letters="wxyz" />
+        <KeypadButton lit={lit} digit="7" letters="pqrs" />
+        <KeypadButton
+          lit={lit}
+          digit="8"
+          letters="tuv"
+          onClick={lightOnCallback(down)}
+        />
+        <KeypadButton lit={lit} digit="9" letters="wxyz" reverse />
       </KeypadRow>
       <KeypadRow>
-        <KeypadButton digit="*" letters="+" onClick={start} />
-        <KeypadButton digit="0" letters="⎵" onClick={reset} />
-        <KeypadButton digit="#" letters="⌂" />
+        <KeypadButton
+          lit={lit}
+          digit="*"
+          letters="+"
+          onClick={lightOnCallback(start)}
+        />
+        <KeypadButton lit={lit} digit="0" letters="⎵" onClick={backlightOn} />
+        <KeypadButton
+          lit={lit}
+          digit="#"
+          letters="⌂"
+          onClick={lightOnCallback(reset)}
+          reverse
+        />
       </KeypadRow>
     </KeypadContainer>
   );

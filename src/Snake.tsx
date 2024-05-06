@@ -33,6 +33,15 @@ function Snake({ sizeX, sizeY, frameRate }: Props) {
 
   const [update, setUpdate] = useState(false);
 
+  const [lit, setLit] = useState(false);
+  const lightTimer = useRef<number>();
+
+  const backlightOn = () => {
+    setLit(true);
+    window.clearTimeout(lightTimer.current);
+    lightTimer.current = window.setTimeout(() => setLit(false), 5000);
+  };
+
   const spawnFood = useCallback(() => {
     setFoods((prev) => {
       let foodCoord: Coord;
@@ -140,7 +149,7 @@ function Snake({ sizeX, sizeY, frameRate }: Props) {
 
   return (
     <PhoneBody>
-      <DisplayContainer>
+      <DisplayContainer $lit={lit}>
         {Array(sizeY)
           .fill(null)
           .map((_, y) => (
@@ -152,6 +161,7 @@ function Snake({ sizeX, sizeY, frameRate }: Props) {
                   const props: DisplayCellProps = {
                     $firstRow: !y,
                     $firstColumn: !x,
+                    $lit: lit,
                   };
                   if (
                     snakeBody.some((part) => cur.equals(part)) ||
@@ -180,6 +190,8 @@ function Snake({ sizeX, sizeY, frameRate }: Props) {
         right={right}
         reset={reset}
         start={start}
+        lit={lit}
+        backlightOn={backlightOn}
       />
     </PhoneBody>
   );

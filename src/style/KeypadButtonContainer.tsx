@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
-const KeypadButtonContainer = styled.button`
+interface Props {
+  $reverse?: boolean;
+  $lit?: boolean;
+}
+
+const KeypadButtonContainer = styled.button<Props>`
   font-family: monospace;
   font-size: 15px;
   height: 30px;
@@ -16,6 +21,14 @@ const KeypadButtonContainer = styled.button`
   div {
     font-size: 10px;
   }
+  ${(props) =>
+    props.$reverse && `flex-direction: row-reverse; justify-content: right;`}
+  ${(props) => props.$lit && `color: ${props.theme.colors.backlight};`}
 `;
+
+KeypadButtonContainer.defaultProps = {
+  $reverse: false,
+  $lit: false,
+};
 
 export default KeypadButtonContainer;
