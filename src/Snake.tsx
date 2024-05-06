@@ -8,7 +8,7 @@ import DisplayRow from "./style/DisplayRow";
 import { Coord } from "./Coord";
 import { PhoneBody } from "./style/PhoneBody";
 
-interface Props {
+interface SnakeProps {
   sizeX: number;
   sizeY: number;
   frameRate: number;
@@ -19,7 +19,7 @@ const dirLeft = new Coord(-1, 0);
 const dirUp = new Coord(0, -1);
 const dirDown = new Coord(0, 1);
 
-function Snake({ sizeX, sizeY, frameRate }: Props) {
+function Snake({ sizeX, sizeY, frameRate }: SnakeProps) {
   const [snakeHead, setSnakeHead] = useState<Coord>(new Coord(-1, -1));
   // Body segments, ordered by the distance from the head
   const [snakeBody, setSnakeBody] = useState<Coord[]>([]);

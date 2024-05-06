@@ -3,7 +3,7 @@ import KeypadButton from "./KeypadButton";
 import KeypadContainer from "./style/KeypadContainer";
 import KeypadRow from "./style/KeypadRow";
 
-interface Props {
+interface KeypadProps {
   up: () => void;
   down: () => void;
   left: () => void;
@@ -23,7 +23,7 @@ function Keypad({
   start,
   lit,
   backlightOn,
-}: Props) {
+}: KeypadProps) {
   const lightOnCallback = (cb?: () => void) => () => {
     backlightOn();
     cb?.();

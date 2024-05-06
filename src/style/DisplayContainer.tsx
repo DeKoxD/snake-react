@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-interface Props {
+interface DisplayContainerProps {
   $lit?: boolean;
 }
 
-const DisplayContainer = styled.div<Props>`
+const DisplayContainer = styled.div<DisplayContainerProps>`
   display: flex;
   flex-direction: column;
   border: solid 2px

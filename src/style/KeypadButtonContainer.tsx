@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-interface Props {
+interface KeypadButtonContainerProps {
   $reverse?: boolean;
   $lit?: boolean;
 }
 
-const KeypadButtonContainer = styled.button<Props>`
+const KeypadButtonContainer = styled.button<KeypadButtonContainerProps>`
   font-family: monospace;
   font-size: 15px;
   height: 30px;
