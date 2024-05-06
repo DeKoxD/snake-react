@@ -81,7 +81,9 @@ function Snake({ sizeX, sizeY, frameRate }: SnakeProps) {
       snakeNewDirection.current = undefined;
     }
     const newSnakeHeadCoord = snakeHead.addCoord(snakeDirection.current, limit);
-    const lost = snakeBody.some((part) => newSnakeHeadCoord.equals(part));
+    const lost = snakeBody
+      .slice(0, -1)
+      .some((part) => newSnakeHeadCoord.equals(part));
     if (lost) {
       stop();
       return;
