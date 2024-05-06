@@ -6,6 +6,7 @@ import DisplayCell, { DisplayCellProps } from "./style/DisplayCell";
 import DisplayContainer from "./style/DisplayContainer";
 import DisplayRow from "./style/DisplayRow";
 import { Coord } from "./Coord";
+import { PhoneBody } from "./style/PhoneBody";
 
 interface Props {
   sizeX: number;
@@ -138,7 +139,7 @@ function Snake({ sizeX, sizeY, frameRate }: Props) {
   }, [reset]);
 
   return (
-    <>
+    <PhoneBody>
       <DisplayContainer>
         {Array(sizeY)
           .fill(null)
@@ -180,7 +181,7 @@ function Snake({ sizeX, sizeY, frameRate }: Props) {
         reset={reset}
         start={start}
       />
-    </>
+    </PhoneBody>
   );
 }
 
