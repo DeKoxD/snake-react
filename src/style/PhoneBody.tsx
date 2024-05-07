@@ -10,4 +10,6 @@ export const PhoneBody = styled.div`
   width: fit-content;
   padding: 10px;
   background-color: ${(props) => props.theme.colors.bodyColor};
+  border-radius: 10%;
+  user-select: none;
 `;

@@ -5,13 +5,13 @@ interface KeypadButtonContainerProps {
   $lit?: boolean;
 }
 
-const KeypadButtonContainer = styled.button<KeypadButtonContainerProps>`
+const KeypadButtonContainer = styled.div<KeypadButtonContainerProps>`
   font-family: monospace;
   font-size: 15px;
   height: 30px;
   width: 50px;
-  background-color: ${(props) => props.theme.colors.keypadButton};
-  margin: 3px;
+  background-color: ${(props) => props.theme.colors.keypadButtonLight};
+  padding: 0px 3px;
   border-radius: 5px;
   display: flex;
   flex-direction: row;
