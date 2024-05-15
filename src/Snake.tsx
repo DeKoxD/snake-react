@@ -1,14 +1,10 @@
 import { useMemo, useState, useCallback, useEffect, useRef } from "react";
 import Keypad from "./Keypad";
-import DisplayCellSnakeBody from "./style/DisplayCellSnakeBody";
-import DisplayCellFood from "./style/DisplayCellFood";
-import DisplayCell, { DisplayCellProps } from "./style/DisplayCell";
-import DisplayContainer from "./style/DisplayContainer";
-import DisplayRow from "./style/DisplayRow";
 import { Coord } from "./Coord";
 import { PhoneBody } from "./style/PhoneBody";
 import Forehead from "./Forehead";
 import PhoneTop from "./style/PhoneTop";
+import Display from "./Display";
 
 interface SnakeProps {
   sizeX: number;
@@ -151,47 +147,23 @@ function Snake({ sizeX, sizeY, frameRate }: SnakeProps) {
     };
   }, [reset]);
 
+  const frame = useMemo(() => {
+    const frame = Array(sizeX * sizeY).fill(false);
+    frame[snakeHead.y * sizeX + snakeHead.x] = true;
+    snakeBody.forEach((part) => {
+      frame[part.y * sizeX + part.x] = true;
+    });
+    foods.forEach((food) => {
+      frame[food.y * sizeX + food.x] = true;
+    });
+    return frame;
+  }, [sizeX, sizeY, snakeHead, snakeBody, foods]);
+
   return (
     <PhoneBody>
       <PhoneTop>
         <Forehead />
-        <DisplayContainer $lit={lit}>
-          {Array(sizeY)
-            .fill(null)
-            .map((_, y) => (
-              <DisplayRow key={`row ${y}`}>
-                {Array(sizeX)
-                  .fill(null)
-                  .map((_, x) => {
-                    const cur: Coord = new Coord(x, y);
-                    const props: DisplayCellProps = {
-                      $firstRow: !y,
-                      $firstColumn: !x,
-                      $lit: lit,
-                    };
-                    if (
-                      snakeBody.some((part) => cur.equals(part)) ||
-                      cur.equals(snakeHead)
-                    ) {
-                      return (
-                        <DisplayCellSnakeBody
-                          key={`snake cell ${x} ${y}`}
-                          {...props}
-                        />
-                      );
-                    } else if (foods.some((food) => cur.equals(food))) {
-                      return (
-                        <DisplayCellFood
-                          key={`food cell ${x} ${y}`}
-                          {...props}
-                        />
-                      );
-                    }
-                    return <DisplayCell key={`cell ${x} ${y}`} {...props} />;
-                  })}
-              </DisplayRow>
-            ))}
-        </DisplayContainer>
+        <Display sizeX={sizeX} sizeY={sizeY} frame={frame} lit={lit} />
       </PhoneTop>
       <Keypad
         up={up}
