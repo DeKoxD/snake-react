@@ -3,7 +3,6 @@ import styled from "styled-components";
 interface DisplayContainerProps {
   $sizeX: number;
   $sizeY: number;
-  $lit?: boolean;
 }
 
 const DisplayContainer = styled.div<DisplayContainerProps>`
@@ -25,9 +24,5 @@ const DisplayContainer = styled.div<DisplayContainerProps>`
     }
   }
 `;
-
-DisplayContainer.defaultProps = {
-  $lit: false,
-};
 
 export default DisplayContainer;

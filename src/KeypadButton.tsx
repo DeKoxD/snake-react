@@ -1,16 +1,17 @@
+import { Keys } from "./Phone";
 import KeypadButtonContainer from "./style/KeypadButtonContainer";
 
 interface KeypadButtonProps extends React.HTMLAttributes<HTMLDivElement> {
-  digit: "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "*" | "0" | "#";
+  digit: Keys;
   letters?: string;
   reverse?: boolean;
-  lit?: boolean;
+  lit: boolean;
 }
 
 const KeypadButton = ({
   digit,
-  letters,
-  reverse,
+  letters = "",
+  reverse = false,
   lit,
   ...rest
 }: KeypadButtonProps) => (

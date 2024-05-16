@@ -26,9 +26,4 @@ const KeypadButtonContainer = styled.div<KeypadButtonContainerProps>`
   ${(props) => props.$lit && `color: ${props.theme.colors.backlight};`}
 `;
 
-KeypadButtonContainer.defaultProps = {
-  $reverse: false,
-  $lit: false,
-};
-
 export default KeypadButtonContainer;

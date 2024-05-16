@@ -4,7 +4,7 @@ import DisplayCell from "./DisplayCell";
 const DisplayCellActive = styled(DisplayCell).attrs({
   className: "active",
 })`
-  background-color: ${(props) => props.theme.colors.snakeBody};
+  background-color: ${(props) => props.theme.colors.displayActive};
 `;
 
 export default DisplayCellActive;
