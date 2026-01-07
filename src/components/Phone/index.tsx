@@ -1,30 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Coord } from "./Coord";
-import Display from "./Display";
-import Forehead from "./Forehead";
-import Keypad from "./Keypad";
-import { PhoneBody } from "./PhoneBody";
-import PhoneTop from "./PhoneTop";
+import { Coord } from "../../helpers/Coord";
+import Display from "../Display";
+import Forehead from "../Forehead";
+import Keypad from "../Keypad";
+import { Keys } from "../Keypad/KeypadButton";
+import { PhoneBody, PhoneTop } from "./styles";
 
 interface PhoneProps {
   sizeX?: number;
   sizeY?: number;
   frameRate?: number;
 }
-
-export type Keys =
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "*"
-  | "0"
-  | "#";
 
 const dirRight = new Coord(1, 0);
 const dirLeft = new Coord(-1, 0);

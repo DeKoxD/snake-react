@@ -1,5 +1,18 @@
-import KeypadButtonContainer from "./KeypadButtonContainer";
-import { Keys } from "./Phone";
+import { KeypadButtonContainer as KeypadButtonTextContainer } from "./styles";
+
+export type Keys =
+  | "1"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "*"
+  | "0"
+  | "#";
 
 interface KeypadButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   digit: Keys;
@@ -13,10 +26,10 @@ const KeypadButton = ({
   reverse = false,
   ...rest
 }: KeypadButtonProps) => (
-  <KeypadButtonContainer data-reverse={reverse} {...rest}>
+  <KeypadButtonTextContainer data-reverse={reverse} {...rest}>
     {digit}
     {letters && <div>{letters}</div>}
-  </KeypadButtonContainer>
+  </KeypadButtonTextContainer>
 );
 
 export default KeypadButton;

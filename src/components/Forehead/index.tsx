@@ -1,6 +1,4 @@
-import ForeheadContainer from "./ForeheadContainer";
-import ForeheadLogo from "./ForeheadLogo";
-import ForeheadSpeaker from "./ForeheadSpeaker";
+import { ForeheadContainer, ForeheadLogo, ForeheadSpeaker } from "./styles";
 
 const Forehead = () => {
   return (

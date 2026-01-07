@@ -4,7 +4,7 @@ interface DisplayCellProps {
   "data-active": boolean;
 }
 
-const DisplayCell = styled.div<DisplayCellProps>`
+export const DisplayCell = styled.div<DisplayCellProps>`
   font-size: 5px;
   height: 8px;
   width: 8px;
@@ -13,5 +13,3 @@ const DisplayCell = styled.div<DisplayCellProps>`
     background-color: var(--colors-display-active);
   }
 `;
-
-export default DisplayCell;

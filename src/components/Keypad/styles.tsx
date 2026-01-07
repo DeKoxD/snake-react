@@ -1,6 +1,6 @@
 import { styled } from "@linaria/react";
 
-const KeypadContainer = styled.div`
+export const KeypadContainer = styled.div`
   display: flex;
   flex-direction: column;
   border: solid 10px var(--colors-phone-body-dark);
@@ -8,4 +8,10 @@ const KeypadContainer = styled.div`
   background-color: var(--colors-phone-body-dark);
 `;
 
-export default KeypadContainer;
+export const KeypadRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 3px 0;
+  gap: 15px;
+`;

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import DisplayContainer from "./DisplayContainer";
-import MemoDisplayLine from "./MemoDisplayLine";
+import DisplayLine from "./DisplayLine";
+import { DisplayContainer } from "./styles";
 
 interface DisplayProps {
   sizeX: number;
@@ -17,7 +17,7 @@ const Display = ({ sizeX, sizeY, frame }: DisplayProps) => {
   return (
     <DisplayContainer $sizeX={sizeX} $sizeY={sizeY}>
       {lines.map((line, index) => (
-        <MemoDisplayLine key={`line ${index}`} line={line} />
+        <DisplayLine key={`line ${index}`} line={line} />
       ))}
     </DisplayContainer>
   );

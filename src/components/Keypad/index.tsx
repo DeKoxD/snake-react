@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
-import KeypadButton from "./KeypadButton";
-import KeypadContainer from "./KeypadContainer";
-import KeypadRow from "./KeypadRow";
-import { Keys } from "./Phone";
+import KeypadButton, { Keys } from "./KeypadButton";
+import { KeypadContainer, KeypadRow } from "./styles";
 
 interface KeypadProps {
   pressedKeys: string[];

@@ -4,7 +4,7 @@ interface KeypadButtonContainerProps {
   "data-reverse"?: boolean;
 }
 
-const KeypadButtonContainer = styled.div<KeypadButtonContainerProps>`
+export const KeypadButtonContainer = styled.div<KeypadButtonContainerProps>`
   font-family: monospace;
   font-size: 15px;
   height: 30px;
@@ -27,5 +27,3 @@ const KeypadButtonContainer = styled.div<KeypadButtonContainerProps>`
     justify-content: right;
   }
 `;
-
-export default KeypadButtonContainer;

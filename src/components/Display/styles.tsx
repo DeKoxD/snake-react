@@ -5,7 +5,7 @@ interface DisplayContainerProps {
   $sizeY: number;
 }
 
-const DisplayContainer = styled.div<DisplayContainerProps>`
+export const DisplayContainer = styled.div<DisplayContainerProps>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -17,5 +17,3 @@ const DisplayContainer = styled.div<DisplayContainerProps>`
   padding: 1px;
   border: solid 1px var(--colors-display-inactive);
 `;
-
-export default DisplayContainer;
