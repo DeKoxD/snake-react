@@ -1,5 +1,5 @@
+import KeypadButtonContainer from "./KeypadButtonContainer";
 import { Keys } from "./Phone";
-import KeypadButtonContainer from "./style/KeypadButtonContainer";
 
 interface KeypadButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   digit: Keys;

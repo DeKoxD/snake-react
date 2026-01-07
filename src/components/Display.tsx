@@ -1,6 +1,6 @@
 import { useMemo } from "react";
+import DisplayContainer from "./DisplayContainer";
 import MemoDisplayLine from "./MemoDisplayLine";
-import DisplayContainer from "./style/DisplayContainer";
 
 interface DisplayProps {
   sizeX: number;

@@ -3,13 +3,13 @@ import { Coord } from "./Coord";
 import Display from "./Display";
 import Forehead from "./Forehead";
 import Keypad from "./Keypad";
-import { PhoneBody } from "./style/PhoneBody";
-import PhoneTop from "./style/PhoneTop";
+import { PhoneBody } from "./PhoneBody";
+import PhoneTop from "./PhoneTop";
 
 interface PhoneProps {
-  sizeX: number;
-  sizeY: number;
-  frameRate: number;
+  sizeX?: number;
+  sizeY?: number;
+  frameRate?: number;
 }
 
 export type Keys =
@@ -31,7 +31,7 @@ const dirLeft = new Coord(-1, 0);
 const dirUp = new Coord(0, -1);
 const dirDown = new Coord(0, 1);
 
-function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
+function Phone({ sizeX = 24, sizeY = 16, frameRate = 8 }: PhoneProps) {
   const [pressedKeys, setPressedKeys] = useState<Keys[]>([]);
 
   const [snakeHead, setSnakeHead] = useState<Coord>(new Coord(-1, -1));

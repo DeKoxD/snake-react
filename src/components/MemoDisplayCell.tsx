@@ -1,5 +1,5 @@
 import { memo } from "react";
-import DisplayCell from "./style/DisplayCell";
+import DisplayCell from "./DisplayCell";
 
 interface MemoDisplayCellProps {
   state: boolean;
