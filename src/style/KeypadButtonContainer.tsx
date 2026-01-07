@@ -1,8 +1,7 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 
 interface KeypadButtonContainerProps {
-  $reverse?: boolean;
-  $lit?: boolean;
+  "data-reverse"?: boolean;
 }
 
 const KeypadButtonContainer = styled.div<KeypadButtonContainerProps>`
@@ -10,7 +9,7 @@ const KeypadButtonContainer = styled.div<KeypadButtonContainerProps>`
   font-size: 15px;
   height: 30px;
   width: 50px;
-  background-color: ${(props) => props.theme.colors.keypadButtonLight};
+  background-color: var(--colors-phone-body-light);
   padding: 0px 3px;
   border-radius: 5px;
   display: flex;
@@ -18,12 +17,15 @@ const KeypadButtonContainer = styled.div<KeypadButtonContainerProps>`
   justify-content: left;
   align-items: center;
   gap: 5px;
+  color: var(--colors-keypad-button-text);
   div {
     font-size: 10px;
   }
-  ${(props) =>
-    props.$reverse && `flex-direction: row-reverse; justify-content: right;`}
-  ${(props) => props.$lit && `color: ${props.theme.colors.backlight};`}
+
+  &[data-reverse="true"] {
+    flex-direction: row-reverse;
+    justify-content: right;
+  }
 `;
 
 export default KeypadButtonContainer;

@@ -1,10 +1,10 @@
-import { useMemo, useState, useCallback, useEffect, useRef } from "react";
-import Keypad from "./Keypad";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Coord } from "./Coord";
-import { PhoneBody } from "./style/PhoneBody";
-import Forehead from "./Forehead";
-import PhoneTop from "./style/PhoneTop";
 import Display from "./Display";
+import Forehead from "./Forehead";
+import Keypad from "./Keypad";
+import { PhoneBody } from "./style/PhoneBody";
+import PhoneTop from "./style/PhoneTop";
 
 interface PhoneProps {
   sizeX: number;
@@ -38,21 +38,24 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
   // Body segments, ordered by the distance from the head
   const [snakeBody, setSnakeBody] = useState<Coord[]>([]);
   const snakeDirection = useRef<Coord>(dirRight);
-  const snakeNewDirection = useRef<Coord>();
+  const snakeNewDirection = useRef<Coord | null>(null);
   const [foods, setFoods] = useState<Coord[]>([]);
   const limit = useMemo(() => new Coord(sizeX, sizeY), [sizeX, sizeY]);
 
-  const animationRequest = useRef<number>();
+  const animationRequest = useRef<number | null>(null);
   const nextFrame = useRef<number>(0);
 
   const [update, setUpdate] = useState(false);
 
   const [lit, setLit] = useState(false);
-  const lightTimer = useRef<number>();
+  const lightTimer = useRef<number | null>(null);
 
   const backlightOn = useCallback(() => {
     setLit(true);
-    window.clearTimeout(lightTimer.current);
+    const currentLightTimer = lightTimer.current;
+    if (currentLightTimer) {
+      window.clearTimeout(currentLightTimer);
+    }
     lightTimer.current = window.setTimeout(() => setLit(false), 5000);
   }, []);
 
@@ -90,7 +93,7 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
     const newDirection = snakeNewDirection.current;
     if (newDirection) {
       snakeDirection.current = newDirection;
-      snakeNewDirection.current = undefined;
+      snakeNewDirection.current = null;
     }
     const newSnakeHeadCoord = snakeHead.addCoord(snakeDirection.current, limit);
     const lost = snakeBody
@@ -136,7 +139,7 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
   function stop() {
     const current = animationRequest.current;
     if (current) {
-      animationRequest.current = undefined;
+      animationRequest.current = null;
       cancelAnimationFrame(current);
     }
   }
@@ -225,13 +228,12 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
   }, [sizeX, sizeY, snakeHead, snakeBody, foods]);
 
   return (
-    <PhoneBody>
+    <PhoneBody data-lit={lit}>
       <PhoneTop>
         <Forehead />
-        <Display sizeX={sizeX} sizeY={sizeY} frame={frame} lit={lit} />
+        <Display sizeX={sizeX} sizeY={sizeY} frame={frame} />
       </PhoneTop>
       <Keypad
-        lit={lit}
         pressedKeys={pressedKeys}
         onKeyPress={handleKeyPress}
         onKeyRelease={handleKeyRelease}

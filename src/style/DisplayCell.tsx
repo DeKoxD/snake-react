@@ -1,12 +1,16 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 
-const DisplayCell = styled.div`
+interface DisplayCellProps {
+  "data-active": boolean;
+}
+
+const DisplayCell = styled.div<DisplayCellProps>`
   font-size: 5px;
   height: 8px;
   width: 8px;
-  background-color: ${(props) => props.theme.colors.displayLight};
-  :has(.lit div) {
-    background-color: ${(props) => props.theme.colors.backlight};
+  background-color: var(--colors-display-inactive);
+  &[data-active="true"] {
+    background-color: var(--colors-display-active);
   }
 `;
 

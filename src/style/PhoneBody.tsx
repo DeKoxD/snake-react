@@ -1,15 +1,31 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 
-export const PhoneBody = styled.div`
+interface PhoneBodyProps {
+  "data-lit"?: boolean;
+}
+
+export const PhoneBody = styled.div<PhoneBodyProps>`
+  --colors-display-lines: #3c4e3c;
+  --colors-display-inactive: #b6e1c9;
+  --colors-display-active: #111111;
+  --colors-backlight: #93c202;
+  --colors-keypad-button-text: #111111;
+  --colors-phone-body-dark: #333544;
+  --colors-phone-body-light: #c3c3c3;
+
+  &[data-lit="true"] {
+    --colors-display-inactive: #93c202;
+    --colors-keypad-button-text: #93c202;
+  }
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: stat;
-  background-color: #f5f5f5;
   height: fit-content;
   width: fit-content;
   padding: 10px;
-  background-color: ${(props) => props.theme.colors.bodyColor};
+  background-color: var(--colors-phone-body-dark);
   border-radius: 10%;
   -webkit-touch-callout: none;
   -webkit-user-select: none;

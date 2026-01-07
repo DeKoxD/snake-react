@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 
 const ForeheadLogo = styled.div`
   display: flex;

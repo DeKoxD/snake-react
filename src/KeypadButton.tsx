@@ -5,17 +5,15 @@ interface KeypadButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   digit: Keys;
   letters?: string;
   reverse?: boolean;
-  lit: boolean;
 }
 
 const KeypadButton = ({
   digit,
   letters = "",
   reverse = false,
-  lit,
   ...rest
 }: KeypadButtonProps) => (
-  <KeypadButtonContainer $reverse={reverse} $lit={lit} {...rest}>
+  <KeypadButtonContainer data-reverse={reverse} {...rest}>
     {digit}
     {letters && <div>{letters}</div>}
   </KeypadButtonContainer>

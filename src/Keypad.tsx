@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useMemo } from "react";
 import KeypadButton from "./KeypadButton";
+import { Keys } from "./Phone";
 import KeypadContainer from "./style/KeypadContainer";
 import KeypadRow from "./style/KeypadRow";
-import { Keys } from "./Phone";
 
 interface KeypadProps {
   pressedKeys: string[];
   onKeyPress: (key: Keys) => void;
   onKeyRelease: (key: Keys) => void;
-  lit: boolean;
 }
 
 interface KeypadButtonProps {
@@ -17,7 +16,7 @@ interface KeypadButtonProps {
   reverse?: boolean;
 }
 
-function Keypad({ lit, onKeyPress, onKeyRelease }: KeypadProps) {
+function Keypad({ onKeyPress, onKeyRelease }: KeypadProps) {
   const handleKeyEvent = useCallback(
     (key: string, press: boolean) => {
       switch (key) {
@@ -153,7 +152,6 @@ function Keypad({ lit, onKeyPress, onKeyRelease }: KeypadProps) {
               digit={digit}
               letters={letters}
               reverse={reverse}
-              lit={lit}
               onMouseDown={() => onKeyPress(digit)}
               onMouseUp={() => onKeyRelease(digit)}
             />

@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import { styled } from "@linaria/react";
 
 const KeypadContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border: solid 10px ${(props) => props.theme.colors.bodyColor};
+  border: solid 10px var(--colors-phone-body-dark);
   width: fit-content;
-  background-color: ${(props) => props.theme.colors.bodyColor};
+  background-color: var(--colors-phone-body-dark);
 `;
 
 export default KeypadContainer;

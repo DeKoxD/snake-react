@@ -1,5 +1,4 @@
 import { memo } from "react";
-import DisplayCellActive from "./style/DisplayCellActive";
 import DisplayCell from "./style/DisplayCell";
 
 interface MemoDisplayCellProps {
@@ -7,7 +6,7 @@ interface MemoDisplayCellProps {
 }
 
 const MemoDisplayCell = memo(({ state }: MemoDisplayCellProps) => {
-  return state ? <DisplayCellActive /> : <DisplayCell />;
+  return <DisplayCell data-active={state} />;
 });
 
 export default MemoDisplayCell;
