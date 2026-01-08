@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import KeypadButton, { Keys } from "./KeypadButton";
 import { KeypadContainer, KeypadRow } from "./styles";
 
 interface KeypadProps {
-  pressedKeys: string[];
-  onKeyPress: (key: Keys) => void;
-  onKeyRelease: (key: Keys) => void;
+  onKeyPress: (key: Keys, pressedKeys: Keys[]) => void;
+  onKeyRelease: (key: Keys, pressedKeys: Keys[]) => void;
 }
 
 interface KeypadButtonProps {
@@ -14,38 +13,118 @@ interface KeypadButtonProps {
   reverse?: boolean;
 }
 
+const keys: KeypadButtonProps[][] = [
+  [
+    {
+      digit: "1",
+      letters: "O_O",
+    },
+    {
+      digit: "2",
+      letters: "abc",
+    },
+    {
+      digit: "3",
+      letters: "def",
+      reverse: true,
+    },
+  ],
+  [
+    {
+      digit: "4",
+      letters: "ghi",
+    },
+    {
+      digit: "5",
+      letters: "jkl",
+    },
+    {
+      digit: "6",
+      letters: "mno",
+      reverse: true,
+    },
+  ],
+  [
+    {
+      digit: "7",
+      letters: "pqrs",
+    },
+    {
+      digit: "8",
+      letters: "tuv",
+    },
+    {
+      digit: "9",
+      letters: "wxyz",
+      reverse: true,
+    },
+  ],
+  [
+    {
+      digit: "*",
+      letters: "+",
+    },
+    {
+      digit: "0",
+      letters: "⎵",
+    },
+    {
+      digit: "#",
+      letters: "⌂",
+      reverse: true,
+    },
+  ],
+];
+
+const keyMap: Record<string, Keys> = {
+  ArrowUp: "2",
+  w: "2",
+  Numpad2: "2",
+  ArrowDown: "8",
+  s: "8",
+  Numpad8: "8",
+  ArrowLeft: "4",
+  a: "4",
+  Numpad4: "4",
+  ArrowRight: "6",
+  d: "6",
+  Numpad6: "6",
+  " ": "*",
+  Enter: "#",
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "9": "9",
+  "0": "0",
+};
+
 function Keypad({ onKeyPress, onKeyRelease }: KeypadProps) {
+  const pressedKeys = useRef<Keys[]>([]);
+
   const handleKeyEvent = useCallback(
     (key: string, press: boolean) => {
-      switch (key) {
-        case "ArrowUp":
-        case "w":
-        case "Numpad2":
-          press ? onKeyPress("2") : onKeyRelease("2");
-          break;
-        case "ArrowDown":
-        case "s":
-        case "Numpad8":
-          press ? onKeyPress("8") : onKeyRelease("8");
-          break;
-        case "ArrowLeft":
-        case "a":
-        case "Numpad4":
-          press ? onKeyPress("4") : onKeyRelease("4");
-          break;
-        case "ArrowRight":
-        case "d":
-        case "Numpad6":
-          press ? onKeyPress("6") : onKeyRelease("6");
-          break;
-        case " ":
-          press ? onKeyPress("*") : onKeyRelease("*");
-          break;
-        case "Enter":
-          press ? onKeyPress("#") : onKeyRelease("#");
-          break;
-        case "b":
-          break;
+      const mappedKey = keyMap[key];
+      if (!mappedKey) return;
+      if (press) {
+        navigator.locks.request("pressedKeys", () => {
+          pressedKeys.current = [
+            ...pressedKeys.current.filter((k) => k !== mappedKey),
+            mappedKey,
+          ];
+        });
+        onKeyPress(mappedKey, [...pressedKeys.current]);
+      } else {
+        navigator.locks.request("pressedKeys", () => {
+          pressedKeys.current = pressedKeys.current.filter(
+            (k) => k !== mappedKey
+          );
+        });
+        onKeyRelease(mappedKey, [...pressedKeys.current]);
       }
     },
     [onKeyPress, onKeyRelease]
@@ -74,72 +153,6 @@ function Keypad({ onKeyPress, onKeyRelease }: KeypadProps) {
     };
   }, [handleKeyDown, handleKeyUp]);
 
-  const keys: KeypadButtonProps[][] = useMemo(
-    () => [
-      [
-        {
-          digit: "1",
-          letters: "O_O",
-        },
-        {
-          digit: "2",
-          letters: "abc",
-        },
-        {
-          digit: "3",
-          letters: "def",
-          reverse: true,
-        },
-      ],
-      [
-        {
-          digit: "4",
-          letters: "ghi",
-        },
-        {
-          digit: "5",
-          letters: "jkl",
-        },
-        {
-          digit: "6",
-          letters: "mno",
-          reverse: true,
-        },
-      ],
-      [
-        {
-          digit: "7",
-          letters: "pqrs",
-        },
-        {
-          digit: "8",
-          letters: "tuv",
-        },
-        {
-          digit: "9",
-          letters: "wxyz",
-          reverse: true,
-        },
-      ],
-      [
-        {
-          digit: "*",
-          letters: "+",
-        },
-        {
-          digit: "0",
-          letters: "⎵",
-        },
-        {
-          digit: "#",
-          letters: "⌂",
-          reverse: true,
-        },
-      ],
-    ],
-    []
-  );
-
   return (
     <KeypadContainer>
       {keys.map((row, i) => (
@@ -150,8 +163,8 @@ function Keypad({ onKeyPress, onKeyRelease }: KeypadProps) {
               digit={digit}
               letters={letters}
               reverse={reverse}
-              onMouseDown={() => onKeyPress(digit)}
-              onMouseUp={() => onKeyRelease(digit)}
+              onMouseDown={() => handleKeyEvent(digit, true)}
+              onMouseUp={() => handleKeyEvent(digit, false)}
             />
           ))}
         </KeypadRow>
@@ -160,4 +173,4 @@ function Keypad({ onKeyPress, onKeyRelease }: KeypadProps) {
   );
 }
 
-export default Keypad;
+export default memo(Keypad);

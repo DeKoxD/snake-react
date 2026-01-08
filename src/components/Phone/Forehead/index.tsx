@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ForeheadContainer, ForeheadLogo, ForeheadSpeaker } from "./styles";
 
 const Forehead = () => {
@@ -13,4 +14,4 @@ const Forehead = () => {
   );
 };
 
-export default Forehead;
+export default memo(Forehead);
