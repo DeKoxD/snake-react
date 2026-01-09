@@ -1,60 +1,41 @@
-import { useMemo, useState, useCallback, useEffect, useRef } from "react";
-import Keypad from "./Keypad";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Keys } from "../components/Keypad/KeypadButton";
 import { Coord } from "./Coord";
-import { PhoneBody } from "./style/PhoneBody";
-import Forehead from "./Forehead";
-import PhoneTop from "./style/PhoneTop";
-import Display from "./Display";
 
-interface PhoneProps {
+interface SnakeProps {
   sizeX: number;
   sizeY: number;
   frameRate: number;
+  pressedKeys: Keys[];
 }
 
-export type Keys =
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "*"
-  | "0"
-  | "#";
+interface SnakeReturn {
+  frame: boolean[];
+}
 
 const dirRight = new Coord(1, 0);
 const dirLeft = new Coord(-1, 0);
 const dirUp = new Coord(0, -1);
 const dirDown = new Coord(0, 1);
 
-function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
-  const [pressedKeys, setPressedKeys] = useState<Keys[]>([]);
-
+export function useSnake({
+  sizeX,
+  sizeY,
+  frameRate,
+  pressedKeys,
+}: SnakeProps): SnakeReturn {
   const [snakeHead, setSnakeHead] = useState<Coord>(new Coord(-1, -1));
   // Body segments, ordered by the distance from the head
   const [snakeBody, setSnakeBody] = useState<Coord[]>([]);
   const snakeDirection = useRef<Coord>(dirRight);
-  const snakeNewDirection = useRef<Coord>();
+  const snakeNewDirection = useRef<Coord | null>(null);
   const [foods, setFoods] = useState<Coord[]>([]);
   const limit = useMemo(() => new Coord(sizeX, sizeY), [sizeX, sizeY]);
 
-  const animationRequest = useRef<number>();
+  const animationRequest = useRef<number | null>(null);
   const nextFrame = useRef<number>(0);
 
   const [update, setUpdate] = useState(false);
-
-  const [lit, setLit] = useState(false);
-  const lightTimer = useRef<number>();
-
-  const backlightOn = useCallback(() => {
-    setLit(true);
-    window.clearTimeout(lightTimer.current);
-    lightTimer.current = window.setTimeout(() => setLit(false), 5000);
-  }, []);
 
   const spawnFood = useCallback(() => {
     setFoods((prev) => {
@@ -90,7 +71,7 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
     const newDirection = snakeNewDirection.current;
     if (newDirection) {
       snakeDirection.current = newDirection;
-      snakeNewDirection.current = undefined;
+      snakeNewDirection.current = null;
     }
     const newSnakeHeadCoord = snakeHead.addCoord(snakeDirection.current, limit);
     const lost = snakeBody
@@ -136,7 +117,7 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
   function stop() {
     const current = animationRequest.current;
     if (current) {
-      animationRequest.current = undefined;
+      animationRequest.current = null;
       cancelAnimationFrame(current);
     }
   }
@@ -155,22 +136,6 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
     };
   }, [reset]);
 
-  const handleKeyPress = useCallback(
-    (key: Keys) => {
-      backlightOn();
-      setPressedKeys((prev) => {
-        return [...prev, key];
-      });
-    },
-    [backlightOn]
-  );
-
-  const handleKeyRelease = useCallback((key: Keys) => {
-    setPressedKeys((prev) => {
-      return prev.filter((pressedKey) => pressedKey !== key);
-    });
-  }, []);
-
   useEffect(() => {
     function up() {
       if (snakeDirection.current != dirDown) snakeNewDirection.current = dirUp;
@@ -186,33 +151,33 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
       if (snakeDirection.current != dirLeft)
         snakeNewDirection.current = dirRight;
     }
-    pressedKeys.forEach((key) => {
-      switch (key) {
-        case "2":
-          up();
-          break;
-        case "8":
-          down();
-          break;
-        case "4":
-          left();
-          break;
-        case "6":
-          right();
-          break;
-        case "5":
-          break;
-        case "*":
-          start();
-          break;
-        case "#":
-          stop();
-          break;
-      }
-    });
+    const lastKey = pressedKeys.at(-1);
+    if (!lastKey) return;
+    switch (lastKey) {
+      case "2":
+        up();
+        break;
+      case "8":
+        down();
+        break;
+      case "4":
+        left();
+        break;
+      case "6":
+        right();
+        break;
+      case "5":
+        break;
+      case "*":
+        start();
+        break;
+      case "#":
+        stop();
+        break;
+    }
   }, [animate, pressedKeys, start]);
 
-  const frame = useMemo(() => {
+  const frame = useMemo<boolean[]>(() => {
     const frame = Array(sizeX * sizeY).fill(false);
     frame[snakeHead.y * sizeX + snakeHead.x] = true;
     snakeBody.forEach((part) => {
@@ -224,20 +189,5 @@ function Phone({ sizeX, sizeY, frameRate }: PhoneProps) {
     return frame;
   }, [sizeX, sizeY, snakeHead, snakeBody, foods]);
 
-  return (
-    <PhoneBody>
-      <PhoneTop>
-        <Forehead />
-        <Display sizeX={sizeX} sizeY={sizeY} frame={frame} lit={lit} />
-      </PhoneTop>
-      <Keypad
-        lit={lit}
-        pressedKeys={pressedKeys}
-        onKeyPress={handleKeyPress}
-        onKeyRelease={handleKeyRelease}
-      />
-    </PhoneBody>
-  );
+  return { frame };
 }
-
-export default Phone;

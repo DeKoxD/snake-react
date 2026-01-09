@@ -1,6 +1,5 @@
-import ForeheadContainer from "./style/ForeheadContainer";
-import ForeheadLogo from "./style/ForeheadLogo";
-import ForeheadSpeaker from "./style/ForeheadSpeaker";
+import { memo } from "react";
+import { ForeheadContainer, ForeheadLogo, ForeheadSpeaker } from "./styles";
 
 const Forehead = () => {
   return (
@@ -15,4 +14,4 @@ const Forehead = () => {
   );
 };
 
-export default Forehead;
+export default memo(Forehead);
