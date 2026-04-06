@@ -123,27 +123,27 @@ function Keypad({ onKeyPress, onKeyRelease }: KeypadProps) {
       } else {
         navigator.locks.request("pressedKeys", () => {
           pressedKeys.current = pressedKeys.current.filter(
-            (k) => k !== mappedKey
+            (k) => k !== mappedKey,
           );
         });
         onKeyRelease(mappedKey, [...pressedKeys.current]);
       }
     },
-    [onKeyPress, onKeyRelease]
+    [onKeyPress, onKeyRelease],
   );
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       handleKeyEvent(event.key, true);
     },
-    [handleKeyEvent]
+    [handleKeyEvent],
   );
 
   const handleKeyUp = useCallback(
     (event: KeyboardEvent) => {
       handleKeyEvent(event.key, false);
     },
-    [handleKeyEvent]
+    [handleKeyEvent],
   );
 
   useEffect(() => {
@@ -167,6 +167,8 @@ function Keypad({ onKeyPress, onKeyRelease }: KeypadProps) {
               reverse={reverse}
               onMouseDown={() => handleKeyEvent(digit, true)}
               onMouseUp={() => handleKeyEvent(digit, false)}
+              onTouchStart={() => handleKeyEvent(digit, true)}
+              onTouchEnd={() => handleKeyEvent(digit, true)}
             />
           ))}
         </KeypadRow>
